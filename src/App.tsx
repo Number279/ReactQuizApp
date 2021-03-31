@@ -1,16 +1,16 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 //Components
-import QuestionCard from './components/QuestionCard'
-import {fetchQuizQuestions} from './API';
+import QuestionCard from "./components/QuestionCard";
+import { fetchQuizQuestions } from "./API";
 //Types
-import {QuestionState, Difficulty} from './API';
+import { QuestionState, Difficulty } from "./API";
 
 type AnswerObject = {
   question: string;
   answer: string;
   correct: boolean;
   correctAnswer: string;
-}
+};
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -34,17 +34,11 @@ const App = () => {
     setUserAnswers([]);
     setNumber(0);
     setLoading(false);
+  };
 
+  const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {};
 
-  }
-
-  const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
-
-  }
-
-  const nextQuestion = () => {
-
-  }
+  const nextQuestion = () => {};
 
   const TOTAL_QUESTIONS = 10;
 
@@ -53,25 +47,28 @@ const App = () => {
   return (
     <div className="App">
       <h1>REACT QUIZ</h1>
-      <button className="start" onClick={startTrivia}>
-        Start
-      </button>
-      <p className="score">Score:</p>
-      <p>Loading Questions ...</p>
-      {/* <QuestionCard 
-      questionNr={number + 1}
-      totalQuestions={TOTAL_QUESTIONS}
-      question={questions[number].question}
-      answers={questions[number].answers}
-      userAnswer={userAnswers ? userAnswers[number] : undefined}
-      callback={checkAnswer}
-      /> */}
+      {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
+        <button className="start" onClick={startTrivia}>
+          Start
+        </button>
+      ) : null}
+      {!gameOver ? <p className="score">Score:</p> : null}
+      {loading && <p>Loading Questions ...</p>}
+      {!loading && !gameOver && (
+        <QuestionCard
+          questionNr={number + 1}
+          totalQuestions={TOTAL_QUESTIONS}
+          question={questions[number].question}
+          answers={questions[number].answers}
+          userAnswer={userAnswers ? userAnswers[number] : undefined}
+          callback={checkAnswer}
+        />
+      )}
       <button className="next" onClick={nextQuestion}>
         Next Question
-        </button>
-
+      </button>
     </div>
   );
-}
+};
 
 export default App;
